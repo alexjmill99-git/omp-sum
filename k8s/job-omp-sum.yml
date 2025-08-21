@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: omp-sum-1m
+  namespace: omp-demo
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: omp
+        image: ghcr.io/alexjmill99-git/omp-sum:latest
+        imagePullPolicy: Always
+        env:
+        - name: OMP_NUM_THREADS
+          value: "2"
+        args: ["/usr/local/bin/sum_omp", "1000000"]
+        resources:
+          requests:
+            cpu: "2"
+            memory: "64Mi"
+          limits:
+            cpu: "2"
+            memory: "64Mi"
